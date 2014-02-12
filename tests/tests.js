@@ -1,19 +1,14 @@
 var assert = chai.assert;
 
-suite('temperature', function() {
-	test('32.5F = 0.3C', function() {
-		original.value = "32.5F";
+suite('csv', function() {
+	test('Comprobación de valores', function() {
+		original.value = "\"Nombre\",\"Edad\"\n\"Juan\",30";
 		calculate();
-		assert.deepEqual(converted.innerHTML, "0.3 Celsius");
+		assert.deepEqual(result.innerHTML, "\n<tbody><tr>\t<td>Nombre</td>\t<td>Edad</td></tr>\n<tr>\t<td>Juan</td>\t<td>30</td></tr>\n</tbody>");
 	});
-	test('35C = 95.0 Farenheit', function() {
-		original.value = "35C";
+	test('Tratamiento de errores', function() {
+		original.value = "\"hola\" \"mundo\"\n\"helloworld\"";
 		calculate();
-		assert.deepEqual(converted.innerHTML, "95.0 Farenheit");
-	});
-	test('5X = error', function() {
-		original.value = "5X";
-		calculate();
-		assert.match(converted.innerHTML, /ERROR/);
+		assert.isNotNull(result.innerHTML.match(/class=\"error\"/));
 	});
 });
